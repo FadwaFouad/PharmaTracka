@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharm_traka/screens/login/components/helper.dart';
 import 'package:pharm_traka/screens/login/login_screen.dart';
 
 class SignupPage extends StatelessWidget {
@@ -32,11 +33,11 @@ class SignupPage extends StatelessWidget {
               ),
               Column(
                 children: <Widget>[
-                  inputFile(label: "Name", icon: Icons.person),
-                  inputFile(label: "Email", icon: Icons.email),
-                  inputFile(
+                  Helper.inputFile(label: "Name", icon: Icons.person),
+                  Helper.inputFile(label: "Email", icon: Icons.email),
+                  Helper.inputFile(
                       label: "Password", icon: Icons.lock, obscureText: true),
-                  inputFile(
+                  Helper.inputFile(
                       label: "Confirm Password ",
                       icon: Icons.lock,
                       obscureText: true),
@@ -72,7 +73,7 @@ class SignupPage extends StatelessWidget {
                 height: 20,
               ),
               Text("or continue with"),
-              _buildSocialBtnRow(),
+              Helper.buildSocialBtnRow(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -100,79 +101,4 @@ class SignupPage extends StatelessWidget {
       ),
     );
   }
-}
-
-// we will be creating a widget for text field
-Widget inputFile({label, icon, obscureText = false}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(
-        label,
-        style: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black87),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            prefixIcon: Icon(
-              icon,
-              color: Colors.green.shade200,
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade400))),
-      ),
-      SizedBox(
-        height: 5,
-      )
-    ],
-  );
-}
-
-Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-  return GestureDetector(
-    child: Container(
-      height: 30.0,
-      width: 30.0,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          image: logo,
-        ),
-      ),
-    ),
-  );
-}
-
-Widget _buildSocialBtnRow() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      _buildSocialBtn(
-        () => print('Login with Google'),
-        AssetImage(
-          'assets/images/google.png',
-        ),
-      ),
-      _buildSocialBtn(
-        () => print('Login with Google'),
-        AssetImage(
-          'assets/images/apple.png',
-        ),
-      ),
-      _buildSocialBtn(
-        () => print('Login with Facebook'),
-        AssetImage(
-          'assets/images/facebook.png',
-        ),
-      ),
-    ],
-  );
 }
