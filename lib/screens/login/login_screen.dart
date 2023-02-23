@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pharm_traka/screens/home/home_screen.dart';
+import 'package:pharm_traka/screens/home/bottom_nav.dart';
 import 'package:pharm_traka/screens/login/components/helper.dart';
 import 'package:pharm_traka/screens/login/signup_screen.dart';
 
@@ -58,7 +58,7 @@ class LoginPage extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                            builder: (context) => const BottomNav()));
                   },
                   color: Colors.green.shade500,
                   elevation: 0,

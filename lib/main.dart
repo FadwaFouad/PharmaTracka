@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'PharmaTracka',
       theme: ThemeData(
+        fontFamily: 'RobotoSlab',
         primarySwatch: Colors.green,
       ),
       home: LoginPage(),
