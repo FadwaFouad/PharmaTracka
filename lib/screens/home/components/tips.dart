@@ -16,7 +16,7 @@ class DayTips extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Colors.green,
+            color: Colors.green.shade400,
           ),
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(10),

@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
               child: ListView(
                 children: [
                   Card(
-                    elevation: 4,
+                    elevation: 2,
                     child: ListTile(
                       leading: Icon(
                         Icons.medication_rounded,
@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   Card(
-                    elevation: 4,
+                    elevation: 2,
                     child: ListTile(
                       leading: Icon(
                         Icons.medication_rounded,
