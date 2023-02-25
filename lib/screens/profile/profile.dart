@@ -16,7 +16,7 @@ class Profile extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             height: MediaQuery.of(context).size.height - 10,
-            // width: MediaQuery.of(context).size.width * 0.2,
+            width: double.infinity,
             child: Column(
               children: [
                 SizedBox(height: 10),
