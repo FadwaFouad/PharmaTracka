@@ -1,11 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:pharm_traka/screens/profile/profile.dart';
+import 'package:pharm_traka/screens/add_medicine/components/medicine_dailog.dart';
 
 class AddMedicine extends StatelessWidget {
   const AddMedicine({super.key});
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -75,7 +74,7 @@ class AddMedicine extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                getButton(context),
+                confirmButton(context, 'set reminder'),
               ],
             ),
           ),
@@ -111,17 +110,18 @@ class AddMedicine extends StatelessWidget {
     );
   }
 
-  Widget getButton(
-    context,
-  ) {
+  Widget confirmButton(context, title) {
     return Container(
       padding: EdgeInsets.only(top: 3, left: 3),
       child: MaterialButton(
         minWidth: double.infinity,
         height: 60,
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Profile()));
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                  pageBuilder: (context, _, __) => const MedicineDialog(),
+                  opaque: false));
         },
         color: Colors.green.shade400,
         elevation: 0,
@@ -129,7 +129,7 @@ class AddMedicine extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(
-          " Set reminder",
+          title,
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 16,
@@ -167,13 +167,13 @@ class AddMedicine extends StatelessWidget {
           ),
         ),
         buildMedicineBtn(
-          () => print('Login with Google'),
+          () {},
           AssetImage(
             'assets/images/injection.png',
           ),
         ),
         buildMedicineBtn(
-          () => print('Login with Facebook'),
+          () {},
           AssetImage(
             'assets/images/dose.png',
           ),
