@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pharm_traka/screens/add_medicine/add_medicine.dart';
 import 'package:pharm_traka/screens/profile/profile.dart';
+import 'package:pharm_traka/screens/reminder/reminder.dart';
 
 import 'home_screen.dart';
 
@@ -23,6 +24,7 @@ class _BottomNavState extends State<BottomNav> {
         children: [
           HomePage(),
           AddMedicine(),
+          ReminderPage(),
           Profile(),
         ],
       ),

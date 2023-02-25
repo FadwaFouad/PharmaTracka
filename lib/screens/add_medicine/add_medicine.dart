@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:pharm_traka/screens/profile/profile.dart';
 
 class AddMedicine extends StatelessWidget {
@@ -122,7 +120,7 @@ class AddMedicine extends StatelessWidget {
         minWidth: double.infinity,
         height: 60,
         onPressed: () {
-          Navigator.pushReplacement(context,
+          Navigator.push(context,
               MaterialPageRoute(builder: (context) => const Profile()));
         },
         color: Colors.green.shade400,
