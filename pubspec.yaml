@@ -51,11 +51,19 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.12.0"
 
 #  splash screen for project
 flutter_native_splash:
   color: "#ffffff"
   image: assets/images/logo.png
+
+# app icon
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21 # android min sdk m
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
