@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pharm_traka/data/models/medicine.dart';
+import 'package:pharm_traka/providers/list_provider.dart';
 import 'package:pharm_traka/screens/add_medicine/components/medicine_dailog.dart';
+import 'package:provider/provider.dart';
 
 import '../../providers/notify_dart';
 import 'components/medicine_time.dart';
@@ -15,51 +18,20 @@ class AddMedicine extends StatefulWidget {
 
   @override
   State<AddMedicine> createState() => _AddMedicineState();
-
-  static Widget buildMedicineBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      child: Container(
-        height: 45.0,
-        width: 45.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.grey.shade300,
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }
-
-  static Widget buildMedicineBtnRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        buildMedicineBtn(
-          () {},
-          AssetImage(
-            'assets/images/capsule.png',
-          ),
-        ),
-        buildMedicineBtn(
-          () {},
-          AssetImage(
-            'assets/images/injection.png',
-          ),
-        ),
-        buildMedicineBtn(
-          () {},
-          AssetImage(
-            'assets/images/dose.png',
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 class _AddMedicineState extends State<AddMedicine> {
+  // group for radio buttons
+  int? group = 1;
+  // inilize forms feilds
+  String medName = "";
+  DateTime medDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  TimeOfDay medTime =
+      TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
+  String doseAmount = '100';
+  String doseNum = '1';
+
   @override
   void initState() {
     super.initState();
@@ -91,12 +63,12 @@ class _AddMedicineState extends State<AddMedicine> {
                   'Enter the name of medicine',
                   style: TextStyle(color: Colors.grey.shade700),
                 ),
-                InputText(""),
+                nameInputText(),
                 SizedBox(height: 10),
                 SizedBox(height: 20),
                 TextTitle('Appearance of pill'),
                 SizedBox(height: 15),
-                AddMedicine.buildMedicineBtnRow(),
+                buildMedicineBtnRow(),
                 SizedBox(height: 40),
                 Row(
                   children: [
@@ -122,9 +94,9 @@ class _AddMedicineState extends State<AddMedicine> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(child: InputText('Num: 1')),
+                    Expanded(child: amountInputText()),
                     SizedBox(width: 10),
-                    Expanded(child: InputText("120mg")),
+                    Expanded(child: doseNumInputText()),
                   ],
                 ),
                 SizedBox(height: 20),
@@ -137,7 +109,23 @@ class _AddMedicineState extends State<AddMedicine> {
     );
   }
 
-  Widget InputText(String hint) {
+  String getMedicineImage() {
+    String image = 'assets/images/capsule.png';
+    switch (group) {
+      case 1:
+        image = 'assets/images/capsule.png';
+        break;
+      case 2:
+        image = 'assets/images/injection.png';
+        break;
+      case 3:
+        image = 'assets/images/dose.png';
+        break;
+    }
+    return image;
+  }
+
+  Widget nameInputText() {
     return Container(
       padding: EdgeInsets.all(3),
       decoration: BoxDecoration(
@@ -145,11 +133,48 @@ class _AddMedicineState extends State<AddMedicine> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
-        keyboardType: TextInputType.phone,
+        onChanged: (value) => medName = value,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintStyle: TextStyle(color: Colors.grey),
-          hintText: hint,
+        ),
+      ),
+    );
+  }
+
+  Widget amountInputText() {
+    return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: TextField(
+        onChanged: (value) => doseAmount = value,
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          hintText: '100mg',
+          border: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget doseNumInputText() {
+    return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: TextField(
+        onChanged: (value) => doseNum = value,
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          hintText: 'Num: 1',
+          border: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.grey),
         ),
       ),
     );
@@ -165,13 +190,24 @@ class _AddMedicineState extends State<AddMedicine> {
     );
   }
 
-  Widget confirmButton(context, title) {
+  Widget confirmButton(BuildContext context, title) {
     return Container(
       padding: EdgeInsets.only(top: 3, left: 3),
       child: MaterialButton(
         minWidth: double.infinity,
         height: 60,
         onPressed: () {
+          //save medicine tolist
+          Medicine medicine = Medicine(
+              name: medName,
+              date: medDate,
+              doseAmount: int.parse(doseAmount),
+              image: getMedicineImage(),
+              doseNum: int.parse(doseNum),
+              time: medTime);
+          context.read<ListProvider>().addNewMedicine(medicine);
+
+          // popup confirm dialog
           MedicineNotify.showBigTextNotification(
             title: 'Don\'t forget take Medicine',
             body: 'Centrum- 1 pills',
@@ -219,6 +255,87 @@ class _AddMedicineState extends State<AddMedicine> {
             child: CircleAvatar(
                 radius: 25,
                 backgroundImage: AssetImage('assets/images/dose.png'))),
+      ],
+    );
+  }
+
+  Widget buildMedicineBtn(Function onTap, AssetImage logo) {
+    return GestureDetector(
+      child: Container(
+        height: 45.0,
+        width: 45.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.grey.shade300,
+          image: DecorationImage(
+            image: logo,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildMedicineBtnRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Row(
+          children: [
+            Radio(
+              value: 1,
+              groupValue: group,
+              onChanged: (value) {
+                setState(() {
+                  group = value;
+                });
+              },
+            ),
+            buildMedicineBtn(
+              () {},
+              AssetImage(
+                'assets/images/capsule.png',
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Radio(
+              value: 2,
+              groupValue: group,
+              onChanged: (value) {
+                setState(() {
+                  group = value;
+                });
+              },
+            ),
+            buildMedicineBtn(
+              () {},
+              AssetImage(
+                'assets/images/injection.png',
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Radio(
+              value: 3,
+              groupValue: group,
+              onChanged: (value) {
+                setState(() {
+                  group = value;
+                });
+              },
+            ),
+            buildMedicineBtn(
+              () {},
+              AssetImage(
+                'assets/images/dose.png',
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

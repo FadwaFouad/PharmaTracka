@@ -12,6 +12,7 @@ class ListProvider extends ChangeNotifier {
   }
 
   void changeDate(DateTime date) {
+    // remove hours to make compare
     DateTime newDate = DateTime(date.year, date.month, date.day);
     List<Medicine> list =
         listOfMed.where((element) => element.date == newDate).toList();
