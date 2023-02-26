@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:pharm_traka/screens/add_medicine/add_medicine.dart';
+import 'package:pharm_traka/data/models/medicine.dart';
+import 'package:pharm_traka/providers/list_provider.dart';
 import 'package:provider/provider.dart';
 import '../../providers/navigation_provider.dart';
 import 'components.dart/calender_section.dart';
 
-class ReminderPage extends StatelessWidget {
+class ReminderPage extends StatefulWidget {
   const ReminderPage({super.key});
 
   @override
+  State<ReminderPage> createState() => _ReminderPageState();
+}
+
+class _ReminderPageState extends State<ReminderPage> {
+  @override
   Widget build(BuildContext context) {
+    List<Medicine> list = context.watch<ListProvider>().getTodayList;
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -35,7 +43,7 @@ class ReminderPage extends StatelessWidget {
               SizedBox(height: 20),
               getTitle("Upcoming reminder"),
               SizedBox(height: 10),
-              Expanded(child: getMedicineList()),
+              Expanded(child: getMedicineList(list)),
             ],
           ),
         )),
@@ -55,34 +63,15 @@ class ReminderPage extends StatelessWidget {
     );
   }
 
-  Widget getMedicineList() {
-    return ListView(
-      children: [
-        getMedicineInfo(
-            '9.00am', 'assets/images/capsule.png', 'Tetracyclin', 2),
-        Text(
-          '10.00am',
-          style: TextStyle(color: Colors.grey.shade600),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          '11.00am',
-          style: TextStyle(color: Colors.grey.shade600),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          '12.00pm',
-          style: TextStyle(color: Colors.grey.shade600),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        getMedicineInfo('1.00pm', 'assets/images/dose.png', 'Vitamin C', 1),
-      ],
+  Widget getMedicineList(List<Medicine> list) {
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) => getMedicineInfo(
+        '${list[index].time.format(context)}',
+        '${list[index].image}',
+        '${list[index].name}',
+        list[index].doseNum,
+      ),
     );
   }
 

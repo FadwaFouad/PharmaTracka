@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import '../../../providers/list_provider.dart';
 
 class CalenderSection extends StatefulWidget {
   const CalenderSection({super.key});
@@ -53,7 +56,9 @@ class _CalenderSectionState extends State<CalenderSection> {
           setState(() {
             _selectedDay = selectedDay;
             _focusedDay = focusedDay; // update `_focusedDay` here as well
+            // update list
           });
+          context.read<ListProvider>().changeDate(selectedDay);
         },
       ),
     );
