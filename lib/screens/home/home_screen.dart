@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
                       title: Text('Valsartan'),
                       subtitle: Text('160mg daily, 1 pill'),
                       trailing: Text(
-                        '8.00 PM',
+                        '6.00 am',
                         style: TextStyle(fontWeight: FontWeight.w300),
                       ),
                     ),
@@ -48,84 +48,57 @@ class HomePage extends StatelessWidget {
                         Icons.medication_rounded,
                         color: Colors.yellow.shade600,
                       ),
-                      title: Text('Valsartan'),
+                      title: Text('Omeprazole'),
                       subtitle: Text('160mg daily, 1 pill'),
                       trailing: Text(
-                        '8.00 PM',
+                        '8.00 am',
                         style: TextStyle(fontWeight: FontWeight.w300),
                       ),
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.medication_rounded,
-                      color: Colors.yellow.shade600,
-                    ),
-                    title: Text('Omeprazole'),
-                    subtitle: Text('160mg daily, 1 pill'),
-                    trailing: Text(
-                      '8.00 PM',
-                      style: TextStyle(fontWeight: FontWeight.w300),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.medication_rounded,
-                      color: Colors.yellow.shade600,
-                    ),
-                    title: Text('Hypoglycemia'),
-                    subtitle: Text('160mg daily, 1 pill'),
-                    trailing: Text(
-                      '8.00 PM',
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                  Card(
+                    elevation: 2,
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.medication_rounded,
+                        color: Colors.yellow.shade600,
+                      ),
+                      title: Text('Hypoglycemia'),
+                      subtitle: Text('160mg daily, 1 pill'),
+                      trailing: Text(
+                        '9.00 am',
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.medication_rounded,
-                      color: Colors.yellow.shade600,
-                    ),
-                    title: Text('Ciprotab'),
-                    subtitle: Text('160mg daily, 1 pill'),
-                    trailing: Text(
-                      '9.00 AM',
-                      style: TextStyle(fontWeight: FontWeight.w300),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.medication_rounded,
-                      color: Colors.yellow.shade600,
-                    ),
-                    title: Text('Valsartan'),
-                    subtitle: Text('160mg daily, 1 pill'),
-                    trailing: Text(
-                      '8.00 PM',
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                  Card(
+                    elevation: 2,
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.medication_rounded,
+                        color: Colors.yellow.shade600,
+                      ),
+                      title: Text('Ciprotab'),
+                      subtitle: Text('160mg daily, 1 pill'),
+                      trailing: Text(
+                        '1.00 pm',
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.medication_rounded,
-                      color: Colors.yellow.shade600,
-                    ),
-                    title: Text('Valsartan'),
-                    subtitle: Text('160mg daily, 1 pill'),
-                    trailing: Text(
-                      '8.00 PM',
-                      style: TextStyle(fontWeight: FontWeight.w300),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.medication_rounded,
-                      color: Colors.yellow.shade600,
-                    ),
-                    title: Text('Valsartan'),
-                    subtitle: Text('160mg daily, 1 pill'),
-                    trailing: Text(
-                      '8.00 PM',
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                  Card(
+                    elevation: 2,
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.medication_rounded,
+                        color: Colors.yellow.shade600,
+                      ),
+                      title: Text('Vetimine  C'),
+                      subtitle: Text('100mg daily, 1 pill'),
+                      trailing: Text(
+                        '9.00 pm',
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
                     ),
                   ),
                 ],

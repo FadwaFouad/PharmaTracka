@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pharm_traka/screens/home/bottom_nav.dart';
+import 'package:pharm_traka/bottom_nav.dart';
 import 'package:pharm_traka/screens/login/components/helper.dart';
 import 'package:pharm_traka/screens/login/signup_screen.dart';
 

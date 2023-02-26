@@ -1,10 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pharm_traka/providers/navigation_provider.dart';
 import 'package:pharm_traka/screens/add_medicine/add_medicine.dart';
 import 'package:pharm_traka/screens/profile/profile.dart';
 import 'package:pharm_traka/screens/reminder/reminder.dart';
+import 'package:provider/provider.dart';
 
-import 'home_screen.dart';
+import 'screens/home/home_screen.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -14,13 +18,14 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends State<BottomNav> {
-  int _currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
+    int currentIndex = context.watch<NavigationProvider>().getCurrentIndex;
+
     return Scaffold(
       body: IndexedStack(
-        index: _currentIndex,
+        index: currentIndex,
+        // ignore: prefer_const_literals_to_create_immutables
         children: [
           HomePage(),
           AddMedicine(),
@@ -30,10 +35,12 @@ class _BottomNavState extends State<BottomNav> {
       ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
+          currentIndex: currentIndex,
           onTap: ((index) => setState(() {
-                _currentIndex = index;
+                context.read<NavigationProvider>().setCurrentIndex(index);
+                //_currentIndex = index;
               })),
+          // ignore: prefer_const_literals_to_create_immutables
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),

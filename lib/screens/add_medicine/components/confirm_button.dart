@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/navigation_provider.dart';
 
 class confirmButton extends StatelessWidget {
-  const confirmButton(
-      {super.key,
-      required this.title,
-      required this.context,
-      required this.function});
+  const confirmButton({
+    super.key,
+    required this.title,
+    required this.context,
+  });
   final String title;
   final BuildContext context;
-  final Function function;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,9 @@ class confirmButton extends StatelessWidget {
       child: MaterialButton(
         minWidth: double.infinity,
         height: 60,
-        onPressed: () => function,
+        onPressed: () {
+          Navigator.pop(context);
+        },
         color: Colors.green.shade400,
         elevation: 0,
         shape: RoundedRectangleBorder(

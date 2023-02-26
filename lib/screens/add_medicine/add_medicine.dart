@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pharm_traka/screens/add_medicine/components/medicine_dailog.dart';
 
-import '../../controllers/notify_dart';
+import '../../providers/notify_dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();

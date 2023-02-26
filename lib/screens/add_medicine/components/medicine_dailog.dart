@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pharm_traka/bottom_nav.dart';
 import 'package:pharm_traka/screens/add_medicine/components/confirm_button.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/navigation_provider.dart';
 
 class MedicineDialog extends StatelessWidget {
   const MedicineDialog({super.key});
@@ -26,11 +30,19 @@ class MedicineDialog extends StatelessWidget {
       children: [
         SimpleDialogOption(
           child: confirmButton(
-              context: context, title: 'Add new medicine', function: () {}),
+            context: context,
+            title: 'Add new medicine',
+          ),
         ),
         SimpleDialogOption(
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              // navigate home page
+              context.read<NavigationProvider>().setCurrentIndex(0);
+              // dismiss keyboard
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
             child: Text(
               'Go back to homepage',
               style:

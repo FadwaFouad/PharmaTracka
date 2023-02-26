@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pharm_traka/screens/add_medicine/add_medicine.dart';
+import 'package:provider/provider.dart';
+import '../../providers/navigation_provider.dart';
 import 'components.dart/calender_section.dart';
 
 class ReminderPage extends StatelessWidget {
@@ -40,8 +42,7 @@ class ReminderPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AddMedicine()));
+              context.read<NavigationProvider>().setCurrentIndex(1);
             }),
       ),
     );
