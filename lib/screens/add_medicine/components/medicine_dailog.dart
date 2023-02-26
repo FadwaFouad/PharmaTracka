@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pharm_traka/bottom_nav.dart';
 import 'package:pharm_traka/screens/add_medicine/components/confirm_button.dart';
 import 'package:provider/provider.dart';
 

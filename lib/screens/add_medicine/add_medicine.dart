@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pharm_traka/screens/add_medicine/components/medicine_dailog.dart';
 
 import '../../providers/notify_dart';
+import 'components/medicine_time.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -114,14 +115,7 @@ class _AddMedicineState extends State<AddMedicine> {
                 SizedBox(height: 30),
                 TextTitle('Date/Time'),
                 SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(child: InputText('3/3/2023')),
-                    SizedBox(width: 10),
-                    Expanded(child: InputText("8.00AM")),
-                  ],
-                ),
+                MedicineTime(),
                 SizedBox(height: 20),
                 TextTitle('Dosage'),
                 SizedBox(height: 5),
@@ -151,6 +145,7 @@ class _AddMedicineState extends State<AddMedicine> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
+        keyboardType: TextInputType.phone,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintStyle: TextStyle(color: Colors.grey),
