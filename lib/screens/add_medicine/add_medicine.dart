@@ -1,10 +1,70 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pharm_traka/screens/add_medicine/components/medicine_dailog.dart';
 
-class AddMedicine extends StatelessWidget {
+import '../../controllers/notify_dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+class AddMedicine extends StatefulWidget {
   const AddMedicine({super.key});
+
+  @override
+  State<AddMedicine> createState() => _AddMedicineState();
+
+  static Widget buildMedicineBtn(Function onTap, AssetImage logo) {
+    return GestureDetector(
+      child: Container(
+        height: 45.0,
+        width: 45.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.grey.shade300,
+          image: DecorationImage(
+            image: logo,
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget buildMedicineBtnRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        buildMedicineBtn(
+          () {},
+          AssetImage(
+            'assets/images/capsule.png',
+          ),
+        ),
+        buildMedicineBtn(
+          () {},
+          AssetImage(
+            'assets/images/injection.png',
+          ),
+        ),
+        buildMedicineBtn(
+          () {},
+          AssetImage(
+            'assets/images/dose.png',
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AddMedicineState extends State<AddMedicine> {
+  @override
+  void initState() {
+    super.initState();
+    MedicineNotify.initialize(flutterLocalNotificationsPlugin);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,7 +95,7 @@ class AddMedicine extends StatelessWidget {
                 SizedBox(height: 20),
                 TextTitle('Appearance of pill'),
                 SizedBox(height: 15),
-                buildMedicineBtnRow(),
+                AddMedicine.buildMedicineBtnRow(),
                 SizedBox(height: 40),
                 Row(
                   children: [
@@ -117,6 +177,11 @@ class AddMedicine extends StatelessWidget {
         minWidth: double.infinity,
         height: 60,
         onPressed: () {
+          MedicineNotify.showBigTextNotification(
+            title: 'Don\'t forget take Medicine',
+            body: 'Centrum- 1 pills',
+            fln: flutterLocalNotificationsPlugin,
+          );
           Navigator.push(
               context,
               PageRouteBuilder(
@@ -137,48 +202,6 @@ class AddMedicine extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  static Widget buildMedicineBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      child: Container(
-        height: 45.0,
-        width: 45.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.grey.shade300,
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }
-
-  static Widget buildMedicineBtnRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        buildMedicineBtn(
-          () {},
-          AssetImage(
-            'assets/images/capsule.png',
-          ),
-        ),
-        buildMedicineBtn(
-          () {},
-          AssetImage(
-            'assets/images/injection.png',
-          ),
-        ),
-        buildMedicineBtn(
-          () {},
-          AssetImage(
-            'assets/images/dose.png',
-          ),
-        ),
-      ],
     );
   }
 
