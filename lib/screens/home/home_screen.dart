@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Medicine> list = context.watch<ListProvider>().getList;
+    List<Medicine> list = context.watch<ListProvider>().getTodayList();
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -47,69 +47,6 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              // children: [
-
-              //   Card(
-              //     elevation: 2,
-              //     child: ListTile(
-              //       leading: Icon(
-              //         Icons.medication_rounded,
-              //         color: Colors.yellow.shade600,
-              //       ),
-              //       title: Text('Omeprazole'),
-              //       subtitle: Text('160mg daily, 1 pill'),
-              //       trailing: Text(
-              //         '8.00 am',
-              //         style: TextStyle(fontWeight: FontWeight.w300),
-              //       ),
-              //     ),
-              //   ),
-              //   Card(
-              //     elevation: 2,
-              //     child: ListTile(
-              //       leading: Icon(
-              //         Icons.medication_rounded,
-              //         color: Colors.yellow.shade600,
-              //       ),
-              //       title: Text('Hypoglycemia'),
-              //       subtitle: Text('160mg daily, 1 pill'),
-              //       trailing: Text(
-              //         '9.00 am',
-              //         style: TextStyle(fontWeight: FontWeight.w300),
-              //       ),
-              //     ),
-              //   ),
-              //   Card(
-              //     elevation: 2,
-              //     child: ListTile(
-              //       leading: Icon(
-              //         Icons.medication_rounded,
-              //         color: Colors.yellow.shade600,
-              //       ),
-              //       title: Text('Ciprotab'),
-              //       subtitle: Text('160mg daily, 1 pill'),
-              //       trailing: Text(
-              //         '1.00 pm',
-              //         style: TextStyle(fontWeight: FontWeight.w300),
-              //       ),
-              //     ),
-              //   ),
-              //   Card(
-              //     elevation: 2,
-              //     child: ListTile(
-              //       leading: Icon(
-              //         Icons.medication_rounded,
-              //         color: Colors.yellow.shade600,
-              //       ),
-              //       title: Text('Vetimine  C'),
-              //       subtitle: Text('100mg daily, 1 pill'),
-              //       trailing: Text(
-              //         '9.00 pm',
-              //         style: TextStyle(fontWeight: FontWeight.w300),
-              //       ),
-              //     ),
-              //   ),
-              // ],
             ),
           ],
         ),

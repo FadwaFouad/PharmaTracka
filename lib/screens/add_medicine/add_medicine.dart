@@ -8,7 +8,6 @@ import 'package:pharm_traka/screens/add_medicine/components/medicine_dailog.dart
 import 'package:provider/provider.dart';
 
 import '../../providers/notify_dart';
-import 'components/medicine_time.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -25,12 +24,15 @@ class _AddMedicineState extends State<AddMedicine> {
   int? group = 1;
   // inilize forms feilds
   String medName = "";
+  String doseAmount = '100';
+  String doseNum = '1';
+  TextEditingController nameController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController numController = TextEditingController();
   DateTime medDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   TimeOfDay medTime =
       TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
-  String doseAmount = '100';
-  String doseNum = '1';
 
   @override
   void initState() {
@@ -87,7 +89,7 @@ class _AddMedicineState extends State<AddMedicine> {
                 SizedBox(height: 30),
                 TextTitle('Date/Time'),
                 SizedBox(height: 5),
-                MedicineTime(),
+                getMedicineTime(),
                 SizedBox(height: 20),
                 TextTitle('Dosage'),
                 SizedBox(height: 5),
@@ -109,83 +111,86 @@ class _AddMedicineState extends State<AddMedicine> {
     );
   }
 
-  String getMedicineImage() {
-    String image = 'assets/images/capsule.png';
-    switch (group) {
-      case 1:
-        image = 'assets/images/capsule.png';
-        break;
-      case 2:
-        image = 'assets/images/injection.png';
-        break;
-      case 3:
-        image = 'assets/images/dose.png';
-        break;
-    }
-    return image;
+  void clearForm() {
+    setState(() {
+      // group for radio buttons
+      group = 1;
+      // inilize forms feilds
+      medName = "";
+      nameController.clear();
+      amountController.clear();
+      numController.clear();
+      medDate = DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      medTime =
+          TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
+      doseAmount = '100';
+      doseNum = '1';
+      FocusManager.instance.primaryFocus?.unfocus();
+    });
   }
 
-  Widget nameInputText() {
-    return Container(
-      padding: EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: TextField(
-        onChanged: (value) => medName = value,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.grey),
+  Widget getMedicineTime() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        getDate(),
+        const SizedBox(width: 10),
+        getTime(),
+      ],
+    );
+  }
+
+  Widget getDate() {
+    return InkWell(
+      onTap: (() async {
+        DateTime? newDate = await showDatePicker(
+          context: context,
+          initialDate: medDate,
+          firstDate: DateTime(2000),
+          lastDate: DateTime(2100),
+        );
+        if (newDate == null) return;
+        setState(() {
+          medDate = newDate;
+        });
+      }),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.4,
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          '${medDate.year}/${medDate.month}/${medDate.day}',
+          style: TextStyle(color: Colors.grey.shade700, fontSize: 17),
         ),
       ),
     );
   }
 
-  Widget amountInputText() {
-    return Container(
-      padding: EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: TextField(
-        onChanged: (value) => doseAmount = value,
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          hintText: '100mg',
-          border: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.grey),
+  Widget getTime() {
+    return InkWell(
+      onTap: (() async {
+        TimeOfDay? newTime =
+            await showTimePicker(context: context, initialTime: medTime);
+        if (newTime == null) return;
+        setState(() {
+          medTime = newTime;
+        });
+      }),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.4,
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(20),
         ),
-      ),
-    );
-  }
-
-  Widget doseNumInputText() {
-    return Container(
-      padding: EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: TextField(
-        onChanged: (value) => doseNum = value,
-        keyboardType: TextInputType.phone,
-        decoration: InputDecoration(
-          hintText: 'Num: 1',
-          border: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.grey),
+        child: Text(
+          '${medTime.format(context)}',
+          style: TextStyle(color: Colors.grey.shade700, fontSize: 17),
         ),
-      ),
-    );
-  }
-
-  Widget TextTitle(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        color: Colors.green,
-        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -218,6 +223,7 @@ class _AddMedicineState extends State<AddMedicine> {
               PageRouteBuilder(
                   pageBuilder: (context, _, __) => const MedicineDialog(),
                   opaque: false));
+          clearForm();
         },
         color: Colors.green.shade400,
         elevation: 0,
@@ -236,26 +242,89 @@ class _AddMedicineState extends State<AddMedicine> {
     );
   }
 
-  Widget unRowMed() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      // ignore: prefer_const_literals_to_create_immutables
-      children: [
-        Expanded(
-            child: CircleAvatar(
-                radius: 25,
-                foregroundImage: AssetImage(
-                  'assets/images/injection.png',
-                ))),
-        Expanded(
-            child: CircleAvatar(
-                radius: 25,
-                backgroundImage: AssetImage('assets/images/capsule.png'))),
-        Expanded(
-            child: CircleAvatar(
-                radius: 25,
-                backgroundImage: AssetImage('assets/images/dose.png'))),
-      ],
+  String getMedicineImage() {
+    String image = 'assets/images/capsule.png';
+    switch (group) {
+      case 1:
+        image = 'assets/images/capsule.png';
+        break;
+      case 2:
+        image = 'assets/images/injection.png';
+        break;
+      case 3:
+        image = 'assets/images/dose.png';
+        break;
+    }
+    return image;
+  }
+
+  Widget nameInputText() {
+    return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: TextField(
+        controller: nameController,
+        onChanged: (value) => medName = value,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget amountInputText() {
+    return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: TextField(
+        controller: amountController,
+        onChanged: (value) => doseAmount = value,
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          hintText: '100mg',
+          border: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget doseNumInputText() {
+    return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: TextField(
+        controller: numController,
+        onChanged: (value) => setState(() {
+          doseNum = value;
+        }),
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          hintText: 'Num: 1',
+          border: InputBorder.none,
+          hintStyle: TextStyle(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget TextTitle(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        color: Colors.green,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 

@@ -38,7 +38,7 @@ class _CalenderSectionState extends State<CalenderSection> {
         ),
         firstDay: DateTime.utc(2010, 10, 16),
         lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now(),
+        focusedDay: _focusedDay,
 
         // change format
         calendarFormat: _calendarFormat,

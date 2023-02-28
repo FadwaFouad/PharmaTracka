@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:pharm_traka/data/models/medicine.dart';
-import 'package:pharm_traka/data/repository/data.dart';
 
 class ListProvider extends ChangeNotifier {
-  List<Medicine> listOfMed = MedicineData().list;
-  List<Medicine> listOfToday = MedicineData().list;
+  List<Medicine> listOfMed = [];
+  List<Medicine> changedList = [];
+  List<Medicine> listOfToday = [];
 
   void addNewMedicine(Medicine medicine) {
     listOfMed.add(medicine);
     notifyListeners();
+  }
+
+  List<Medicine> getTodayList() {
+    DateTime today =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    List<Medicine> list =
+        listOfMed.where((element) => element.date == today).toList();
+    return list;
   }
 
   void changeDate(DateTime date) {
@@ -16,10 +24,10 @@ class ListProvider extends ChangeNotifier {
     DateTime newDate = DateTime(date.year, date.month, date.day);
     List<Medicine> list =
         listOfMed.where((element) => element.date == newDate).toList();
-    listOfToday = list;
+    changedList = list;
     notifyListeners();
   }
 
   List<Medicine> get getList => listOfMed;
-  List<Medicine> get getTodayList => listOfToday;
+  List<Medicine> get getChangedList => changedList;
 }

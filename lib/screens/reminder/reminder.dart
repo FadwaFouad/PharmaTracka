@@ -15,7 +15,7 @@ class ReminderPage extends StatefulWidget {
 class _ReminderPageState extends State<ReminderPage> {
   @override
   Widget build(BuildContext context) {
-    List<Medicine> list = context.watch<ListProvider>().getTodayList;
+    List<Medicine> list = context.watch<ListProvider>().getChangedList;
 
     return SafeArea(
       child: Scaffold(
