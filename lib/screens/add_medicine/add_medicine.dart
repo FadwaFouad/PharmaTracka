@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pharm_traka/data/models/medicine.dart';
@@ -20,6 +21,8 @@ class AddMedicine extends StatefulWidget {
 }
 
 class _AddMedicineState extends State<AddMedicine> {
+  // alaram id
+  int _alarmkId = 1;
   // group for radio buttons
   int? group = 1;
   // inilize forms feilds
@@ -102,7 +105,7 @@ class _AddMedicineState extends State<AddMedicine> {
                   ],
                 ),
                 SizedBox(height: 20),
-                confirmButton(context, 'set reminder'),
+                confirmButtonStyle(context, 'set reminder'),
               ],
             ),
           ),
@@ -195,36 +198,13 @@ class _AddMedicineState extends State<AddMedicine> {
     );
   }
 
-  Widget confirmButton(BuildContext context, title) {
+  Widget confirmButtonStyle(BuildContext context, title) {
     return Container(
       padding: EdgeInsets.only(top: 3, left: 3),
       child: MaterialButton(
         minWidth: double.infinity,
         height: 60,
-        onPressed: () {
-          //save medicine tolist
-          Medicine medicine = Medicine(
-              name: medName,
-              date: medDate,
-              doseAmount: int.parse(doseAmount),
-              image: getMedicineImage(),
-              doseNum: int.parse(doseNum),
-              time: medTime);
-          context.read<ListProvider>().addNewMedicine(medicine);
-
-          // popup confirm dialog
-          MedicineNotify.showBigTextNotification(
-            title: 'Don\'t forget take Medicine',
-            body: 'Centrum- 1 pills',
-            fln: flutterLocalNotificationsPlugin,
-          );
-          Navigator.push(
-              context,
-              PageRouteBuilder(
-                  pageBuilder: (context, _, __) => const MedicineDialog(),
-                  opaque: false));
-          clearForm();
-        },
+        onPressed: pressConfirmButton,
         color: Colors.green.shade400,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -240,6 +220,58 @@ class _AddMedicineState extends State<AddMedicine> {
         ),
       ),
     );
+  }
+
+  void pressConfirmButton() {
+    //save medicine tolist
+    Medicine medicine = Medicine(
+        name: medName,
+        date: medDate,
+        doseAmount: int.parse(doseAmount),
+        image: getMedicineImage(),
+        doseNum: int.parse(doseNum),
+        time: medTime);
+    context.read<ListProvider>().addNewMedicine(medicine);
+
+    // set alarm for medicine on time
+    print('before alram');
+    setAlarm(_alarmkId++);
+    print('after alram');
+
+    // show notification
+    //showNotify();
+
+    // popup confirm dialog
+    Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (context, _, __) => const MedicineDialog(),
+            opaque: false));
+
+    // clear form from data
+    clearForm();
+  }
+
+  static void showNotify(Map<String, dynamic> params) {
+    MedicineNotify.showBigTextNotification(
+      title: 'Don\'t forget take Medicine',
+      body: '${params['name']}- ${params['count']} pills',
+      fln: flutterLocalNotificationsPlugin,
+    );
+  }
+
+  void setAlarm(int id) async {
+    DateTime alarmDate = DateTime(
+        medDate.year, medDate.month, medDate.day, medTime.hour, medTime.minute);
+    Map<String, dynamic> medParams = {'name': medName, 'count': doseNum};
+    await AndroidAlarmManager.oneShotAt(alarmDate, id, alarmCallback,
+        params: medParams);
+  }
+
+  static void alarmCallback(id, Map<String, dynamic> params) {
+    print('set alaram');
+
+    showNotify(params);
   }
 
   String getMedicineImage() {

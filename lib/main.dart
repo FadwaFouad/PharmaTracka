@@ -1,9 +1,12 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:pharm_traka/screens/login/login_screen.dart';
 import 'package:pharm_traka/providers/navigation_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
   runApp(const MyApp());
 }
 
