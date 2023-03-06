@@ -36,14 +36,25 @@ class _ReminderPageState extends State<ReminderPage> {
                   Icon(Icons.notifications_active_outlined),
                 ],
               ),
-              SizedBox(height: 20),
-              getTitle("Reminder"),
               SizedBox(height: 10),
               CalenderSection(),
               SizedBox(height: 20),
               getTitle("Upcoming reminder"),
               SizedBox(height: 10),
-              Expanded(child: getMedicineList(list)),
+              list.isEmpty
+                  ? Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 100,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'No reminder for day',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17),
+                      ),
+                    )
+                  : Expanded(child: getMedicineList(list)),
             ],
           ),
         )),

@@ -11,12 +11,12 @@ class ListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Medicine> getTodayList() {
+  void todayList() {
     DateTime today =
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     List<Medicine> list =
         listOfMed.where((element) => element.date == today).toList();
-    return list;
+    listOfToday = list;
   }
 
   void changeDate(DateTime date) {
@@ -30,4 +30,5 @@ class ListProvider extends ChangeNotifier {
 
   List<Medicine> get getList => listOfMed;
   List<Medicine> get getChangedList => changedList;
+  List<Medicine> get getTodayList => listOfToday;
 }

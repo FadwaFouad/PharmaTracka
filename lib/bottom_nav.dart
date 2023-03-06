@@ -21,48 +21,47 @@ class BottomNav extends StatefulWidget {
 class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
+    // initlize data
     int currentIndex = context.watch<NavigationProvider>().getCurrentIndex;
+    context.read<ListProvider>().todayList();
 
-    return ChangeNotifierProvider(
-      create: (context) => ListProvider(),
-      child: Scaffold(
-        body: IndexedStack(
-          index: currentIndex,
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [
-            HomePage(),
-            AddMedicine(),
-            ReminderPage(),
-            Profile(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: currentIndex,
-            onTap: ((index) => setState(() {
-                  context.read<NavigationProvider>().setCurrentIndex(index);
-                  //_currentIndex = index;
-                })),
-            // ignore: prefer_const_literals_to_create_immutables
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add_circle_outline),
-                label: "Add",
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(Icons.calendar_month_rounded),
-                label: "Reminder",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: "Profile",
-              ),
-            ]),
+    return Scaffold(
+      body: IndexedStack(
+        index: currentIndex,
+        // ignore: prefer_const_literals_to_create_immutables
+        children: [
+          HomePage(),
+          AddMedicine(),
+          ReminderPage(),
+          Profile(),
+        ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: currentIndex,
+          onTap: ((index) => setState(() {
+                context.read<NavigationProvider>().setCurrentIndex(index);
+                //_currentIndex = index;
+              })),
+          // ignore: prefer_const_literals_to_create_immutables
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_circle_outline),
+              label: "Add",
+            ),
+            BottomNavigationBarItem(
+              icon: FaIcon(Icons.calendar_month_rounded),
+              label: "Reminder",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Profile",
+            ),
+          ]),
     );
   }
 }

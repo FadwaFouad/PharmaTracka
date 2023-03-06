@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Medicine> list = context.watch<ListProvider>().getTodayList();
+    List<Medicine> list = context.watch<ListProvider>().getTodayList;
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -27,27 +27,40 @@ class HomePage extends StatelessWidget {
             SizedBox(height: 15),
             TextTitle(title: 'Today’s Medication'),
             SizedBox(height: 5),
-            Expanded(
-              child: ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, index) => Card(
-                  elevation: 2,
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.medication_rounded,
-                      color: Colors.yellow.shade600,
+            list.isEmpty
+                ? Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 100,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'No Medicine for Toady',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17),
                     ),
-                    title: Text(list[index].name),
-                    subtitle: Text(
-                        '${list[index].doseAmount}mg daily, ${list[index].doseNum} pill'),
-                    trailing: Text(
-                      '${(list[index].time).format(context)}',
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: list.length,
+                      itemBuilder: (context, index) => Card(
+                        elevation: 2,
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.medication_rounded,
+                            color: Colors.yellow.shade600,
+                          ),
+                          title: Text(list[index].name),
+                          subtitle: Text(
+                              '${list[index].doseAmount}mg daily, ${list[index].doseNum} pill'),
+                          trailing: Text(
+                            '${(list[index].time).format(context)}',
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
