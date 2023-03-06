@@ -21,6 +21,8 @@ class AddMedicine extends StatefulWidget {
 }
 
 class _AddMedicineState extends State<AddMedicine> {
+  // global key for form
+  final _formKey = GlobalKey<FormState>();
   // alaram id
   int _alarmkId = 1;
   // group for radio buttons
@@ -49,64 +51,67 @@ class _AddMedicineState extends State<AddMedicine> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            height: MediaQuery.of(context).size.height - 10,
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 10),
-                Text(
-                  'Add new reminder',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                TextTitle('Name of pill'),
-                SizedBox(height: 5),
-                Text(
-                  'Enter the name of medicine',
-                  style: TextStyle(color: Colors.grey.shade700),
-                ),
-                nameInputText(),
-                SizedBox(height: 10),
-                SizedBox(height: 20),
-                TextTitle('Appearance of pill'),
-                SizedBox(height: 15),
-                buildMedicineBtnRow(),
-                SizedBox(height: 40),
-                Row(
-                  children: [
-                    TextTitle('or take picture'),
-                    SizedBox(width: 10),
-                    InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.camera_alt_sharp,
-                        color: Colors.green.shade800,
-                        size: 50,
+          child: Form(
+            key: _formKey,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              height: MediaQuery.of(context).size.height - 10,
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10),
+                  Text(
+                    'Add new reminder',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  TextTitle('Name of pill'),
+                  SizedBox(height: 5),
+                  Text(
+                    'Enter the name of medicine',
+                    style: TextStyle(color: Colors.grey.shade700),
+                  ),
+                  nameInputText(),
+                  SizedBox(height: 10),
+                  SizedBox(height: 20),
+                  TextTitle('Appearance of pill'),
+                  SizedBox(height: 15),
+                  buildMedicineBtnRow(),
+                  SizedBox(height: 40),
+                  Row(
+                    children: [
+                      TextTitle('or take picture'),
+                      SizedBox(width: 10),
+                      InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.camera_alt_sharp,
+                          color: Colors.green.shade800,
+                          size: 50,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 30),
-                TextTitle('Date/Time'),
-                SizedBox(height: 5),
-                getMedicineTime(),
-                SizedBox(height: 20),
-                TextTitle('Dosage'),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(child: amountInputText()),
-                    SizedBox(width: 10),
-                    Expanded(child: doseNumInputText()),
-                  ],
-                ),
-                SizedBox(height: 20),
-                confirmButtonStyle(context, 'set reminder'),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  TextTitle('Date/Time'),
+                  SizedBox(height: 5),
+                  getMedicineTime(),
+                  SizedBox(height: 20),
+                  TextTitle('Dosage'),
+                  SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(child: amountInputText()),
+                      SizedBox(width: 10),
+                      Expanded(child: doseNumInputText()),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  confirmButtonStyle(context, 'set reminder'),
+                ],
+              ),
             ),
           ),
         ),
@@ -223,33 +228,36 @@ class _AddMedicineState extends State<AddMedicine> {
   }
 
   void pressConfirmButton() {
-    //save medicine tolist
-    Medicine medicine = Medicine(
-        name: medName,
-        date: medDate,
-        doseAmount: int.parse(doseAmount),
-        image: getMedicineImage(),
-        doseNum: int.parse(doseNum),
-        time: medTime);
-    context.read<ListProvider>().addNewMedicine(medicine);
+    //if form validation success
+    if (_formKey.currentState!.validate()) {
+      //save medicine tolist
+      Medicine medicine = Medicine(
+          name: medName,
+          date: medDate,
+          doseAmount: int.parse(doseAmount),
+          image: getMedicineImage(),
+          doseNum: int.parse(doseNum),
+          time: medTime);
+      context.read<ListProvider>().addNewMedicine(medicine);
 
-    // set alarm for medicine on time
-    print('before alram');
-    setAlarm(_alarmkId++);
-    print('after alram');
+      // set alarm for medicine on time
+      print('before alram');
+      setAlarm(_alarmkId++);
+      print('after alram');
 
-    // show notification
-    //showNotify();
+      // show notification
+      //showNotify();
 
-    // popup confirm dialog
-    Navigator.push(
-        context,
-        PageRouteBuilder(
-            pageBuilder: (context, _, __) => const MedicineDialog(),
-            opaque: false));
+      // popup confirm dialog
+      Navigator.push(
+          context,
+          PageRouteBuilder(
+              pageBuilder: (context, _, __) => const MedicineDialog(),
+              opaque: false));
 
-    // clear form from data
-    clearForm();
+      // clear form from data
+      clearForm();
+    }
   }
 
   static void showNotify(Map<String, dynamic> params) {
@@ -297,8 +305,14 @@ class _AddMedicineState extends State<AddMedicine> {
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: TextField(
+      child: TextFormField(
         controller: nameController,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter name';
+          }
+          return null;
+        },
         onChanged: (value) => medName = value,
         decoration: InputDecoration(
           border: InputBorder.none,
@@ -315,8 +329,18 @@ class _AddMedicineState extends State<AddMedicine> {
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: TextField(
+      child: TextFormField(
         controller: amountController,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return ' enter amount';
+          } else {
+            if (!RegExp(r'^[0-9]*$').hasMatch(value)) {
+              return 'enter valid amount';
+            }
+          }
+          return null;
+        },
         onChanged: (value) => doseAmount = value,
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
@@ -335,14 +359,24 @@ class _AddMedicineState extends State<AddMedicine> {
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: TextField(
+      child: TextFormField(
         controller: numController,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return ' enter count';
+          } else {
+            if (!RegExp(r'^[0-9]*$').hasMatch(value)) {
+              return 'enter valid count';
+            }
+          }
+          return null;
+        },
         onChanged: (value) => setState(() {
           doseNum = value;
         }),
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
-          hintText: 'Num: 1',
+          hintText: 'Count: 1',
           border: InputBorder.none,
           hintStyle: TextStyle(color: Colors.grey),
         ),
