@@ -7,6 +7,8 @@ import 'package:pharm_traka/screens/home/components/tips.dart';
 import 'package:pharm_traka/screens/home/components/user_avatar.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/navigation_provider.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -63,6 +65,11 @@ class HomePage extends StatelessWidget {
                   ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              context.read<NavigationProvider>().setCurrentIndex(1);
+            }),
       ),
     );
   }
