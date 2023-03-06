@@ -59,6 +59,7 @@ class _ReminderPageState extends State<ReminderPage> {
           ),
         )),
         floatingActionButton: FloatingActionButton(
+            heroTag: 'reminderBtn',
             child: Icon(Icons.add),
             onPressed: () {
               context.read<NavigationProvider>().setCurrentIndex(1);

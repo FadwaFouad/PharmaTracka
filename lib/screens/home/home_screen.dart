@@ -66,6 +66,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+            heroTag: 'homeBtn',
             child: Icon(Icons.add),
             onPressed: () {
               context.read<NavigationProvider>().setCurrentIndex(1);
