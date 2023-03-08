@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "343707523457",
+    "project_id": "pharamatracka",
+    "storage_bucket": "pharamatracka.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343707523457:android:4f3562b01d850a99e2b080",
+        "android_client_info": {
+          "package_name": "com.example.pharm_traka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343707523457-23nmjpngrkpuec8545n3v4130jq7gdv4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlMcPUUaShC8g2r9xZPoqaA2dEIKTPiYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343707523457-23nmjpngrkpuec8545n3v4130jq7gdv4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

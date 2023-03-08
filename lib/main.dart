@@ -1,12 +1,22 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pharm_traka/providers/list_provider.dart';
 import 'package:pharm_traka/screens/login/login_screen.dart';
 import 'package:pharm_traka/providers/navigation_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
+import 'firebase_options.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // init firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // init Alaram
   await AndroidAlarmManager.initialize();
   runApp(const MyApp());
 }
