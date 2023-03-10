@@ -3,7 +3,7 @@ import 'package:pharm_traka/data/models/medicine.dart';
 
 class ListProvider extends ChangeNotifier {
   List<Medicine> listOfMed = [];
-  List<Medicine> changedList = [];
+  List<Medicine>? changedList;
   List<Medicine> listOfToday = [];
 
   void addNewMedicine(Medicine medicine) {
@@ -20,15 +20,15 @@ class ListProvider extends ChangeNotifier {
   }
 
   void changeDate(DateTime date) {
+    List<Medicine> list = [];
     // remove hours to make compare
     DateTime newDate = DateTime(date.year, date.month, date.day);
-    List<Medicine> list =
-        listOfMed.where((element) => element.date == newDate).toList();
+    list = listOfMed.where((element) => element.date == newDate).toList();
     changedList = list;
     notifyListeners();
   }
 
   List<Medicine> get getList => listOfMed;
-  List<Medicine> get getChangedList => changedList;
+  List<Medicine>? get getChangedList => changedList;
   List<Medicine> get getTodayList => listOfToday;
 }

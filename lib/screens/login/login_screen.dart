@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pharm_traka/bottom_nav.dart';
 import 'package:pharm_traka/screens/login/components/helper.dart';
 import 'package:pharm_traka/screens/login/signup_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/auth_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,6 +17,10 @@ class _LoginPageState extends State<LoginPage> {
   // global key for form
   final _formKey = GlobalKey<FormState>();
   bool passwordVisible = false;
+
+  String email = '';
+  String? password = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,12 +56,24 @@ class _LoginPageState extends State<LoginPage> {
                   child: MaterialButton(
                     minWidth: double.infinity,
                     height: 60,
-                    onPressed: () {
-                      if (_formKey.currentState!.validate())
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const BottomNav()));
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        // sign in to firebase
+                        bool? isLogin =
+                            await context.read<AuthProvider>().signIn(
+                                  email: email.trim(),
+                                  password: password!.trim(),
+                                );
+
+                        // nav to main screen
+                        if (isLogin!)
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const BottomNav()));
+                        else
+                          print('false login');
+                      }
                     },
                     color: Colors.green.shade500,
                     elevation: 0,
@@ -117,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
             } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
               return 'please enter valid email';
             }
+            email = value;
             return null;
           },
           decoration: InputDecoration(
@@ -177,12 +197,8 @@ class _LoginPageState extends State<LoginPage> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'please enter password';
-            } else if (!RegExp(
-                    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-                .hasMatch(value)) {
-              return 'please enter strong password\n must be 8 character with one capital case,' +
-                  ' \n & one lower case & one digit & (@#\$!) ';
             }
+            password = value;
             return null;
           },
           decoration: InputDecoration(

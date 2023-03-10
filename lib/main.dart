@@ -1,6 +1,9 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pharm_traka/bottom_nav.dart';
+import 'package:pharm_traka/providers/auth_provider.dart';
 import 'package:pharm_traka/providers/list_provider.dart';
 import 'package:pharm_traka/screens/login/login_screen.dart';
 import 'package:pharm_traka/providers/navigation_provider.dart';
@@ -35,6 +38,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ListProvider(),
         ),
+        Provider<AuthProvider>(
+          create: (_) => AuthProvider(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) => context.read<AuthProvider>().authState,
+          initialData: null,
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -43,8 +53,23 @@ class MyApp extends StatelessWidget {
           fontFamily: 'RobotoSlab',
           primarySwatch: Colors.green,
         ),
-        home: LoginPage(),
+        home: Authenticate(),
       ),
     );
+  }
+}
+
+class Authenticate extends StatelessWidget {
+  const Authenticate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User?>();
+
+    if (firebaseUser != null) {
+      return BottomNav();
+    }
+
+    return LoginPage();
   }
 }

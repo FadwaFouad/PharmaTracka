@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 10),
-            User(),
+            UserInfo(),
             SizedBox(height: 10),
             DayTips(),
             SizedBox(height: 5),

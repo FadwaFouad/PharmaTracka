@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pharm_traka/bottom_nav.dart';
 import 'package:pharm_traka/screens/login/components/helper.dart';
 import 'package:pharm_traka/screens/login/login_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/auth_provider.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -15,6 +19,8 @@ class _SignupPageState extends State<SignupPage> {
   bool passwordVisible = false;
 
   // initlize form variables
+  String userName = '';
+  String email = '';
   String? password = '';
   String? confirmPassword = '';
 
@@ -27,7 +33,6 @@ class _SignupPageState extends State<SignupPage> {
           key: _formKey,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            //height: MediaQuery.of(context).size.height - 10,
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -57,12 +62,24 @@ class _SignupPageState extends State<SignupPage> {
                   child: MaterialButton(
                     minWidth: double.infinity,
                     height: 60,
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
+                        // conect to firebase to login
+                        String? isSign =
+                            await context.read<AuthProvider>().signUp(
+                                  name: userName,
+                                  email: email.trim(),
+                                  password: password!.trim(),
+                                );
+
+                        if (isSign == 'Signed') {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BottomNav()));
+                        } else {
+                          print(isSign);
+                        }
                       }
                     },
                     color: Colors.green.shade500,
@@ -150,6 +167,7 @@ class _SignupPageState extends State<SignupPage> {
         if (value == null || value.isEmpty) {
           return 'please enter name';
         }
+        userName = value;
         return null;
       },
       decoration: InputDecoration(
@@ -174,6 +192,7 @@ class _SignupPageState extends State<SignupPage> {
         } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
           return 'please enter valid email';
         }
+        email = value;
         return null;
       },
       decoration: InputDecoration(

@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:pharm_traka/main.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/auth_provider.dart';
+import '../../../providers/navigation_provider.dart';
 
 class ProfileMenu extends StatelessWidget {
   const ProfileMenu({super.key});
@@ -21,6 +23,21 @@ class ProfileMenu extends StatelessWidget {
         menuItem(Icons.people, 'Add caregiver'),
         SizedBox(height: 10),
         menuItem(Icons.settings, 'Settings'),
+        SizedBox(height: 10),
+        InkWell(
+            // sign out from app
+            onTap: () async {
+              await context.read<AuthProvider>().signOut();
+              // set defalut nav home
+              context.read<NavigationProvider>().setCurrentIndex(0);
+              // nav to authnitacte
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Authenticate()));
+            },
+            child: menuItem(Icons.logout, 'Log Out')),
+        SizedBox(height: 80),
       ],
     );
   }

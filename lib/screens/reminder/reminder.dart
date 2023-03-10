@@ -15,7 +15,7 @@ class ReminderPage extends StatefulWidget {
 class _ReminderPageState extends State<ReminderPage> {
   @override
   Widget build(BuildContext context) {
-    List<Medicine> list = context.watch<ListProvider>().getChangedList;
+    List<Medicine>? list = context.watch<ListProvider>().getChangedList;
 
     return SafeArea(
       child: Scaffold(
@@ -41,20 +41,12 @@ class _ReminderPageState extends State<ReminderPage> {
               SizedBox(height: 20),
               getTitle("Upcoming reminder"),
               SizedBox(height: 10),
-              list.isEmpty
-                  ? Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 100,
-                      alignment: Alignment.center,
-                      child: Text(
-                        'No reminder for day',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    )
-                  : Expanded(child: getMedicineList(list)),
+              list == null
+                  ? hintText('select day from Calender')
+                  : list.isEmpty
+                      ? hintText('No reminder for day')
+                      : Expanded(child: getMedicineList(list)),
+              SizedBox(height: 50),
             ],
           ),
         )),
@@ -64,6 +56,19 @@ class _ReminderPageState extends State<ReminderPage> {
             onPressed: () {
               context.read<NavigationProvider>().setCurrentIndex(1);
             }),
+      ),
+    );
+  }
+
+  Widget hintText(String text) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 100,
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: TextStyle(
+            color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 17),
       ),
     );
   }
