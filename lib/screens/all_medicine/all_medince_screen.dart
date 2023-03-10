@@ -75,7 +75,7 @@ class AllMedicineList extends StatelessWidget {
           backgroundImage: AssetImage(image),
         ),
         title: Text(title),
-        subtitle: Text('$num pills'),
+        subtitle: Text('$num pills, on $time'),
       ),
     );
   }
@@ -107,6 +107,4 @@ class AllMedicineList extends StatelessWidget {
       ),
     );
   }
-
-  void pressConfirmButton() {}
 }

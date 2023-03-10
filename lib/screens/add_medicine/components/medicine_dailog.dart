@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pharm_traka/data/models/medicine.dart';
 import 'package:pharm_traka/screens/add_medicine/components/confirm_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/navigation_provider.dart';
 
 class MedicineDialog extends StatelessWidget {
-  const MedicineDialog({super.key});
+  const MedicineDialog({required this.medicine, super.key});
+  final Medicine? medicine;
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +16,9 @@ class MedicineDialog extends StatelessWidget {
       elevation: 100,
       title: Column(children: [
         SizedBox(
-            width: 100,
-            height: 100,
-            child: Image.asset('assets/images/capsule.png')),
+            width: 100, height: 100, child: Image.asset(medicine?.image ?? '')),
         Text(
-          'Centrum',
+          medicine?.name ?? '',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         Text(

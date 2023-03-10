@@ -241,18 +241,14 @@ class _AddMedicineState extends State<AddMedicine> {
       context.read<ListProvider>().addNewMedicine(medicine);
 
       // set alarm for medicine on time
-      print('before alram');
       setAlarm(_alarmkId++);
-      print('after alram');
-
-      // show notification
-      //showNotify();
 
       // popup confirm dialog
       Navigator.push(
           context,
           PageRouteBuilder(
-              pageBuilder: (context, _, __) => const MedicineDialog(),
+              pageBuilder: (context, _, __) =>
+                  MedicineDialog(medicine: medicine),
               opaque: false));
 
       // clear form from data
