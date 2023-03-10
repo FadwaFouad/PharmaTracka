@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharm_traka/main.dart';
+import 'package:pharm_traka/screens/all_medicine/all_medince_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/auth_provider.dart';
@@ -16,7 +17,13 @@ class ProfileMenu extends StatelessWidget {
             onTap: () {},
             child: menuItem(Icons.person_search_sharp, 'My Profile')),
         SizedBox(height: 10),
-        menuItem(Icons.medical_information_sharp, 'My medicine'),
+        InkWell(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AllMedicineList(),
+                )),
+            child: menuItem(Icons.medical_information_sharp, 'My medicine')),
         SizedBox(height: 10),
         menuItem(Icons.wine_bar_rounded, 'rewards notice'),
         SizedBox(height: 10),

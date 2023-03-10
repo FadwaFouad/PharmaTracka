@@ -18,17 +18,12 @@ class AuthProvider {
       required String email,
       required String password}) async {
     try {
-      print(name);
       UserCredential result = await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       // update name
       User? user = result.user;
-      print(user?.email);
-      print(user?.displayName);
       await user?.updateDisplayName(name);
       await user?.reload();
-      User? latestUser = FirebaseAuth.instance.currentUser;
-      print(latestUser?.displayName);
       return "Signed";
     } on FirebaseAuthException catch (e) {
       return e.message;
