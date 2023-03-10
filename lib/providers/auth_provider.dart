@@ -31,14 +31,14 @@ class AuthProvider {
   }
 
   //SIGN IN METHOD
-  Future<bool?> signIn(
+  Future<String?> signIn(
       {required String email, required String password}) async {
     try {
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return true;
+      return "Signed";
     } on FirebaseAuthException catch (e) {
-      return false;
+      return e.message;
     }
   }
 

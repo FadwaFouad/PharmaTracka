@@ -57,22 +57,25 @@ class _LoginPageState extends State<LoginPage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () async {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       if (_formKey.currentState!.validate()) {
                         // sign in to firebase
-                        bool? isLogin =
+                        String? isLogin =
                             await context.read<AuthProvider>().signIn(
                                   email: email.trim(),
                                   password: password!.trim(),
                                 );
 
                         // nav to main screen
-                        if (isLogin!)
+                        if (isLogin == 'Signed')
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const BottomNav()));
-                        else
-                          print('false login');
+                        else {
+                          var snackBar = SnackBar(content: Text(isLogin!));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       }
                     },
                     color: Colors.green.shade500,

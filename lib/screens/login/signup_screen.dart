@@ -63,6 +63,7 @@ class _SignupPageState extends State<SignupPage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () async {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       if (_formKey.currentState!.validate()) {
                         // conect to firebase to login
                         String? isSign =
@@ -78,7 +79,8 @@ class _SignupPageState extends State<SignupPage> {
                               MaterialPageRoute(
                                   builder: (context) => BottomNav()));
                         } else {
-                          print(isSign);
+                          var snackBar = SnackBar(content: Text(isSign!));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       }
                     },
